@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import { 
   Home, User, Calendar, FileText, Settings, LogOut, Menu, X, Bell, 
-  Layers, Users, ShieldAlert, Award, CreditCard, Check, Trash2, Briefcase 
+  Layers, Users, ShieldAlert, Award, CreditCard, Check, Trash2, Briefcase, Mail
 } from 'lucide-react';
 
 const Layout = () => {
