@@ -72,13 +72,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medicare_be.wsgi.application'
 
-# Database - Start with SQLite as requested. We can configure MySQL later.
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database — Uses PostgreSQL on Railway (DATABASE_URL), SQLite locally
+import dj_database_url
+DATABASE_URL = env('DATABASE_URL', default=None)
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

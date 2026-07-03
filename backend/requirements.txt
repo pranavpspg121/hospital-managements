@@ -8,3 +8,5 @@ Pillow
 razorpay>=1.3,<1.4
 gunicorn
 whitenoise
+dj-database-url
+psycopg2-binary
