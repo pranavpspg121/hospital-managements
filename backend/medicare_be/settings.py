@@ -126,6 +126,13 @@ SIMPLE_JWT = {
 # CORS configuration
 CORS_ALLOW_ALL_ORIGINS = True  # For dev purposes
 
+# CSRF Trusted Origins (required for Railway/production HTTPS)
+CSRF_TRUSTED_ORIGINS = [
+    'https://hospital-managements-production.up.railway.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+]
+
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
