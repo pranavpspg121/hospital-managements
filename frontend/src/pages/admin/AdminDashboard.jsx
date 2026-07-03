@@ -52,8 +52,11 @@ const AdminDashboard = () => {
     );
   }
 
+  const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/';
+  const backendBase = apiBase.replace('/api/', '');
+
   const photoUrl = user?.profile_photo 
-    ? (user.profile_photo.startsWith('http') ? user.profile_photo : `http://localhost:8000${user.profile_photo}`)
+    ? (user.profile_photo.startsWith('http') ? user.profile_photo : `${backendBase}${user.profile_photo}`)
     : null;
 
   return (
@@ -157,41 +160,47 @@ const AdminDashboard = () => {
         {/* Doctor Distribution Pie Chart */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm lg:col-span-2">
           <h3 className="text-sm font-bold text-slate-800 mb-4">Department Load Distribution</h3>
-          <div className="h-72 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-            <div className="h-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={deptStats}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={3}
-                    dataKey="appointments"
-                    nameKey="name"
-                  >
-                    {deptStats.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => `${value} visits`} />
-                </PieChart>
-              </ResponsiveContainer>
+          {deptStats.length === 0 ? (
+            <div className="h-48 flex items-center justify-center text-xs text-slate-400 font-medium border border-dashed border-slate-100 rounded-xl">
+              No department data available. Please add departments and doctors.
             </div>
-            {/* Department Custom Legend */}
-            <div className="space-y-3">
-              {deptStats.map((item, idx) => (
-                <div key={item.name} className="flex items-center justify-between text-xs border-b border-slate-50 pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
-                    <span className="font-semibold text-slate-700">{item.name}</span>
+          ) : (
+            <div className="h-72 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+              <div className="h-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={deptStats}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={3}
+                      dataKey="appointments"
+                      nameKey="name"
+                    >
+                      {deptStats.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value) => `${value} visits`} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              {/* Department Custom Legend */}
+              <div className="space-y-3">
+                {deptStats.map((item, idx) => (
+                  <div key={item.name} className="flex items-center justify-between text-xs border-b border-slate-50 pb-2">
+                    <div className="flex items-center gap-2">
+                      <span className="h-3 w-3 rounded-full shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }}></span>
+                      <span className="font-semibold text-slate-700">{item.name}</span>
+                    </div>
+                    <span className="text-slate-400 font-medium">{item.doctors} Doctors • {item.appointments} Appointments</span>
                   </div>
-                  <span className="text-slate-400 font-medium">{item.doctors} Doctors • {item.appointments} Appointments</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
       </div>
