@@ -2,10 +2,10 @@
 nixPkgs = ["python312"]
 
 [phases.install]
-cmds = ["cd backend && pip install -r requirements.txt"]
+cmds = ["pip install -r requirements.txt"]
 
 [phases.build]
-cmds = ["cd backend && python manage.py collectstatic --noinput"]
+cmds = ["python manage.py collectstatic --noinput"]
 
 [start]
-cmd = "cd backend && python manage.py migrate && gunicorn medicare_be.wsgi --log-file -"
+cmd = "python manage.py migrate && python manage.py create_default_superuser && gunicorn medicare_be.wsgi --log-file -"
