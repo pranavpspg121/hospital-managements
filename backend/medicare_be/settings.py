@@ -72,10 +72,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medicare_be.wsgi.application'
 
-# Database — Uses PostgreSQL on Railway (DATABASE_URL), SQLite locally
+# Database — Uses PostgreSQL on Railway in production, strictly local SQLite in development
 import dj_database_url
 DATABASE_URL = env('DATABASE_URL', default=None)
-if DATABASE_URL:
+if not DEBUG and DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     }
